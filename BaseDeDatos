@@ -1,0 +1,70 @@
+CREATE DATABASE Tienda;
+
+USE Tienda;
+
+CREATE TABLE Usuario (
+Id_Usuario INT(6) NOT NULL,
+Nombre VARCHAR(40),
+Correo VARCHAR(50),
+ApellidoP VARCHAR(20),
+ApellidoM VARCHAR(20),
+PRIMARY KEY(Id_Usuario));
+
+CREATE TABLE Juego (
+Id_Juego INT(10) NOT NULL,
+Nombre VARCHAR(40),
+Genero VARCHAR(30),
+Precio DOUBLE (10, 3) NOT NULL,
+PRIMARY KEY(Id_Juego));
+
+CREATE TABLE Ventas (
+Id_Venta INT(6) NOT NULL,
+Id_Usuario INT(30) NOT NULL,
+Id_Juego INT(10) NOT NULL,
+Total INT(12),
+PRIMARY KEY(Id_Venta),
+FOREIGN KEY(Id_Usuario) REFERENCES Usuario(Id_Usuario),
+FOREIGN KEY(Id_Juego) REFERENCES Juego(Id_Juego));
+
+CREATE TABLE Proveedor (
+Id_Proveedor INT(7) NOT NULL,
+Nombre VARCHAR(30),
+ApellidoP VARCHAR(30),
+ApellidoM VARCHAR(30),
+Empresa VARCHAR(30),
+PRIMARY KEY(Id_Proveedor));
+
+CREATE TABLE Inventario (
+Id_Juego INT(7) NOT NULL,
+Id_Proveedor INT(7) NOT NULL,
+Cantidad INT(10),
+Precio FLOAT(12, 4),
+FOREIGN KEY(Id_Juego) REFERENCES Juego(Id_Juego),
+FOREIGN KEY(Id_Proveedor) REFERENCES Proveedor(Id_Proveedor));
+
+INSERT INTO Juego VALUES(18029,"Call of Duty","Accion y Disparos",530.45);
+INSERT INTO Juego VALUES(11231,"Minecraft","Accion y Aventura",200);
+
+INSERT INTO Ventas VALUES(1221,1,18029,50);
+INSERT INTO Ventas VALUES(1321,2,11231,100);
+
+INSERT INTO Usuario VALUES(1,"Hector","chuy_dragonball@hotmail.com","Murillo","Villanueva");
+INSERT INTO Usuario VALUES(2, "Aldair", "aldair_rangel@hotmail.com","Rangel","Jiménez");
+
+INSERT INTO Proveedor VALUES(29920,"Pedro","Gonzales","Martinez","DreamPotion");
+INSERT INTO Proveedor VALUES(23022,"Patricio","Gomez","Calderon","Dynakrom");
+
+INSERT INTO Inventario VALUES(18029,29920,120,230.30);
+INSERT INTO Inventario VALUES(11231,23022,200,890.90);
+
+CREATE INDEX Dato ON Usuario(Nombre, ApellidoP, ApellidoM);
+CREATE INDEX DatosJuego on Juego(Genero,Precio);
+CREATE INDEX DatosVenta ON ventas(Total);
+CREATE INDEX DatosProveedor ON Proveedor(ApellidoP,ApellidoM);
+CREATE INDEX DatosInventario ON Inventario (Cantidad,Precio);
+
+SELECT Nombre FROM Usuario WHERE Nombre LIKE "H%";
+
+SELECT Total FROM Ventas WHERE Total >= 50;
+
+SELECT Nombre FROM Proveedor WHERE ApellidoP LIKE "G%" AND ApellidoM LIKE "C%";
