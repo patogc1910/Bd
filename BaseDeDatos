@@ -68,3 +68,53 @@ SELECT Nombre FROM Usuario WHERE Nombre LIKE "H%";
 SELECT Total FROM Ventas WHERE Total >= 50;
 
 SELECT Nombre FROM Proveedor WHERE ApellidoP LIKE "G%" AND ApellidoM LIKE "C%";
+
+
+use tienda;
+
+
+#Implementar y demostrar el uso de procedimientos almacenados para las operaciones de acceso a datos
+
+DELIMITER $$
+CREATE PROCEDURE ConsultarPrecioJuego (
+Precio_Juego DOUBLE,
+Nombre_Juego VARCHAR(30)
+)
+BEGIN
+	IF Precio_Juego > 100.000 THEN SET Nombre_Juego = 'N/A';
+    END IF;
+	SELECT Id_Juego, Nombre, Precio FROM Juego
+    WHERE Precio = Precio_Juego or Nombre = Nombre_Juego;
+    
+END $$
+
+DELIMITER ;
+
+DROP PROCEDURE IF exists ConsultarPrecioJuego;
+
+
+# Implementar y demostrar el uso de transacciones.
+START TRANSACTION;
+
+INSERT INTO Ventas VALUES(1221,1,18029,50);
+INSERT INTO Ventas VALUES(1321,2,11231,100);
+
+ROLLBACK;
+COMMIT;
+
+
+SELECT * FROM Ventas;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
